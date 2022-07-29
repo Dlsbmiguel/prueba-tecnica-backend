@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Model = require("../Models/Customer");
 
-//Post Method
+//Post
 router.post("/", async (req, res) => {
   const data = new Model(req.body);
 
@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-//Get all Method
+//Get all
 router.get("/", async (req, res) => {
   try {
     const data = await Model.find().populate("address");
@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-//Get by ID Method
+//Get by ID
 router.get("/:id", async (req, res) => {
   try {
     const data = await Model.findById(req.params.id).populate("address");
@@ -34,14 +34,33 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-//Update by ID Method
-router.patch("/:id", async (req, res) => {
+//Update
+router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const updatedData = req.body;
     const options = { new: true };
 
     const result = await Model.findByIdAndUpdate(id, updatedData, options);
+
+    res.send(result);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+//Update address array
+router.patch("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatedData = req.body.address;
+    const options = { new: true };
+
+    const result = await Model.findByIdAndUpdate(
+      id,
+      { $push: { address: updatedData } },
+      options
+    );
 
     res.send(result);
   } catch (error) {

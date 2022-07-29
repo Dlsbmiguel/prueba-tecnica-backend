@@ -20,8 +20,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/api/customer", require("./Routes/customer"));
-app.use("/api/address", require("./Routes/address"));
+app.use("/api/customer", require("./Routes/customer.route"));
+app.use("/api/address", require("./Routes/address.route"));
 
 app.listen(PORT, () => {
   console.log(`Server Started at ${PORT}`);
